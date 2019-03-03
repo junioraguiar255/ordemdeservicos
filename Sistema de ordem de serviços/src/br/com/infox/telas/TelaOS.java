@@ -63,7 +63,7 @@ public class TelaOS extends JInternalFrame {
 	private JTextField txtOsTec;
 	private JTextField txtOsValor;
 	private JRadioButton rbtOrc = new JRadioButton("Or\u00E7amento");
-	private JComboBox cboOsSit = new JComboBox();
+	private JComboBox<Object> cboOsSit = new JComboBox<Object>();
 	private JRadioButton rbtOs = new JRadioButton("Ordem de Servi\u00E7o");
 	private JButton btnOsAdicionar = new JButton("");
 

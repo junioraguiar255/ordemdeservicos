@@ -14,14 +14,9 @@ import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
-import net.proteanit.sql.DbUtils;
-
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
