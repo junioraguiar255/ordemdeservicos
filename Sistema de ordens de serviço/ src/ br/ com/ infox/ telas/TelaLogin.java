@@ -22,7 +22,7 @@ import java.awt.Font;
 
 public class TelaLogin extends JFrame {
 	/**
-	 * 
+	 *Josemar 
 	 */
 	private static final long serialVersionUID = 1L;
 	Connection conexao = null;
@@ -64,7 +64,7 @@ public class TelaLogin extends JFrame {
 				principal.setVisible(true);
 				TelaPrincipal.lblUsuario.setText(rs.getString(2));
 				TelaPrincipal.lblUsuario.setForeground(Color.red);
-				// faz o tratamento do perfil do usu·rio
+				// faz o tratamento do perfil do usu√°rio
 				if (perfil.equals("admin")) {
 
 					TelaPrincipal.MenRel.setEnabled(true);
@@ -75,7 +75,7 @@ public class TelaLogin extends JFrame {
 					conexao.close();
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Usu·rio e/ou senha inv·lido");
+				JOptionPane.showMessageDialog(null, "Usu√°rio e/ou senha inv√°lido");
 			}
 
 		} catch (Exception e) {
@@ -163,7 +163,7 @@ public class TelaLogin extends JFrame {
 					Image.SCALE_DEFAULT);
 			lblStatus.setIcon(new ImageIcon(imag));
 
-			/* lblStatus.setText("N„o conectado"); */
+			/* lblStatus.setText("N√£o conectado"); */
 		}
 
 	}
