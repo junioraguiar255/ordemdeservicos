@@ -22,7 +22,7 @@ import java.awt.Font;
 
 public class TelaLogin extends JFrame {
 	/**
-	 *Josemar 
+	 * Josemar
 	 */
 	private static final long serialVersionUID = 1L;
 	Connection conexao = null;
@@ -31,28 +31,31 @@ public class TelaLogin extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField txtSenha;
 	private JPanel contentPane;
-	
-	/*public String digest(String password) throws NoSuchAlgorithmException, 
-    UnsupportedEncodingException {
- MessageDigest algoritmo = MessageDigest.getInstance("SHA-256");
- byte digestMessage[] = algoritmo.digest(password.getBytes("UTF-8"));
- StringBuilder hexPassword = new StringBuilder();
- for (byte aByte : digestMessage) {
-    hexPassword.append(String.format("%02X", 0xFF & aByte));
- }
- return hexPassword.toString();
-}*/
-	
-	
+
+	/*
+	 * public String digest(String password) throws NoSuchAlgorithmException,
+	 * UnsupportedEncodingException { MessageDigest algoritmo =
+	 * MessageDigest.getInstance("SHA-256"); byte digestMessage[] =
+	 * algoritmo.digest(password.getBytes("UTF-8")); StringBuilder hexPassword = new
+	 * StringBuilder(); for (byte aByte : digestMessage) {
+	 * hexPassword.append(String.format("%02X", 0xFF & aByte)); } return
+	 * hexPassword.toString(); }
+	 */
 
 	public void logar() {
-		String sql = "select * from tbusuario where logins=? and senha=?";
+		String sql = "select * from tbusuario where logins=? and senhacpt=?";
 		try {
 			pst = conexao.prepareStatement(sql);
+			String p = String.valueOf(txtSenha.getPassword());
+			String senhaMd5 = null;
+			try {
+				senhaMd5 = ConvertPasswordToMD5.convertPasswordToMD5(p);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e);
+			}
 			pst.setString(1, txtUsuario.getText());
+			pst.setString(2, senhaMd5);
 
-			String pegueSenha = String.valueOf(txtSenha.getPassword());
-			pst.setString(2, pegueSenha);
 			// linha abaixo executa a query
 			rs = pst.executeQuery();
 			// se estiver certo o login

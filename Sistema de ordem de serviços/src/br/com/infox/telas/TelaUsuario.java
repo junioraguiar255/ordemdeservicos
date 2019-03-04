@@ -68,51 +68,59 @@ public class TelaUsuario extends JInternalFrame {
 				txtUsoFone.setText(null);
 				txtUsoLogin.setText(null);
 				txtUsoSenha.setText(null);
-				
+
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
 	}
-	
+
 	public void adicionar() {
 		String sql = "insert into tbusuario values(?,?,?,?,?,?)";
-		
+
 		try {
 			pst = conexao.prepareStatement(sql);
 			pst.setString(1, txtUsoId.getText());
 			pst.setString(2, txtUsoNome.getText());
 			pst.setString(3, txtUsoFone.getText());
 			pst.setString(4, txtUsoLogin.getText());
-			pst.setString(5, txtUsoSenha.getText());
-            pst.setString(6, cboUsoPerfil.getSelectedItem().toString());
-			
-		   if (txtUsoId.getText().isEmpty() || txtUsoNome.getText().isEmpty() || txtUsoFone.getText().isEmpty()
-				   || txtUsoLogin.getText().isEmpty() || txtUsoSenha.getText().isEmpty()) {
-			   JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
-		} else {
-			int adicionado = pst.executeUpdate();
-			if(adicionado > 0) {
-				JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso");
-				txtUsoNome.setText(null);
-				txtUsoFone.setText(null);
-				txtUsoLogin.setText(null);
-				txtUsoSenha.setText(null);
 
-				txtUsoId.setText(null);
+			String p = txtUsoSenha.getText();
+			String senhaMd5 = null;
+			try {
+				senhaMd5 = ConvertPasswordToMD5.convertPasswordToMD5(p);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e);
+			}
+
+			pst.setString(5, senhaMd5);
+			pst.setString(6, cboUsoPerfil.getSelectedItem().toString());
+
+			if (txtUsoId.getText().isEmpty() || txtUsoNome.getText().isEmpty() || txtUsoFone.getText().isEmpty()
+					|| txtUsoLogin.getText().isEmpty() || txtUsoSenha.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+			} else {
+				int adicionado = pst.executeUpdate();
+				if (adicionado > 0) {
+					JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso");
+					txtUsoNome.setText(null);
+					txtUsoFone.setText(null);
+					txtUsoLogin.setText(null);
+					txtUsoSenha.setText(null);
+
+					txtUsoId.setText(null);
 				}
-			
-		}
-			
+
+			}
+
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
-		
-		
+
 	}
-	
+
 	private void alterar() {
-		String sql="update tbusuario set usuario=?,fone=?,logins=?,senha=?,perfil=? where iduser=?";
+		String sql = "update tbusuario set usuario=?,fone=?,logins=?,senha=?,perfil=? where iduser=?";
 		try {
 			pst = conexao.prepareStatement(sql);
 			pst.setString(1, txtUsoNome.getText());
@@ -121,13 +129,13 @@ public class TelaUsuario extends JInternalFrame {
 			pst.setString(4, txtUsoSenha.getText());
 			pst.setString(5, cboUsoPerfil.getSelectedItem().toString());
 			pst.setString(6, txtUsoId.getText());
-			
+
 			if (txtUsoId.getText().isEmpty() || txtUsoNome.getText().isEmpty() || txtUsoFone.getText().isEmpty()
-					   || txtUsoLogin.getText().isEmpty() || txtUsoSenha.getText().isEmpty()) {
-				   JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+					|| txtUsoLogin.getText().isEmpty() || txtUsoSenha.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
 			} else {
 				int adicionado = pst.executeUpdate();
-				if(adicionado > 0) {
+				if (adicionado > 0) {
 					JOptionPane.showMessageDialog(null, "Dados alterados com sucesso");
 					txtUsoNome.setText(null);
 					txtUsoFone.setText(null);
@@ -135,55 +143,51 @@ public class TelaUsuario extends JInternalFrame {
 					txtUsoSenha.setText(null);
 
 					txtUsoId.setText(null);
-					}
-				
-			}
-				
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, e);
-			}
-	}
-	
-	
-	public void remover() {
-		if (txtUsoId.getText().isEmpty() ) {
-			   JOptionPane.showMessageDialog(null, "Preencha o campo ID");
-		}else {
-		
-		int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o "+txtUsoNome.getText());
-		if (confirma == JOptionPane.YES_OPTION) {
-			String sql = "Delete from tbusuario where iduser=?";
-			try {
-				pst = conexao.prepareStatement(sql);
-				pst.setString(1, txtUsoId.getText());				
-				int apagado = pst.executeUpdate();
-				if(apagado>0) {
-					JOptionPane.showMessageDialog(null, "suário removido com sucesso");
-					txtUsoNome.setText(null);
-					txtUsoFone.setText(null);
-					txtUsoLogin.setText(null);
-					txtUsoSenha.setText(null);
-
-					txtUsoId.setText(null);
-					
 				}
-				
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, e);
+
 			}
-		} 
-		
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e);
 		}
 	}
-	
-	
-	
+
+	public void remover() {
+		if (txtUsoId.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Preencha o campo ID");
+		} else {
+
+			int confirma = JOptionPane.showConfirmDialog(null,
+					"Tem certeza que deseja excluir o " + txtUsoNome.getText());
+			if (confirma == JOptionPane.YES_OPTION) {
+				String sql = "Delete from tbusuario where iduser=?";
+				try {
+					pst = conexao.prepareStatement(sql);
+					pst.setString(1, txtUsoId.getText());
+					int apagado = pst.executeUpdate();
+					if (apagado > 0) {
+						JOptionPane.showMessageDialog(null, "suário removido com sucesso");
+						txtUsoNome.setText(null);
+						txtUsoFone.setText(null);
+						txtUsoLogin.setText(null);
+						txtUsoSenha.setText(null);
+
+						txtUsoId.setText(null);
+
+					}
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e);
+				}
+			}
+
+		}
+	}
 
 	public TelaUsuario() {
 		conexao = ModuloConexao.conector();
-		cboUsoPerfil.setModel(new DefaultComboBoxModel<String>(new String[] {"admin", "user"}));
+		cboUsoPerfil.setModel(new DefaultComboBoxModel<String>(new String[] { "admin", "user" }));
 
-		
 		setIconifiable(true);
 		setMaximizable(true);
 		setClosable(true);
@@ -274,59 +278,63 @@ public class TelaUsuario extends JInternalFrame {
 		btnUsoDelete.setMaximumSize(new Dimension(140, 140));
 		btnUsoDelete.setPreferredSize(new Dimension(64, 64));
 		btnUsoDelete.setActionCommand("");
-		
+
 		JLabel lblcamposObrigatrios = new JLabel("*Campos obrigat\u00F3rios");
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(130)
 					.addComponent(btnUsuCreate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(220)
 					.addComponent(btnUsoDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(146, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(46)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addComponent(lblId)
+							.addGap(16))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblSenha)
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+									.addComponent(lblNomer)
+									.addComponent(lblFone, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblFone, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(txtUsoFone, 181, 181, 181))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblSenha)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(txtUsoSenha, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)))
-									.addPreferredGap(ComponentPlacement.RELATED, 52, GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-									.addComponent(btnUsoRead, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(29)))
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblPerfil)
-									.addGap(18)
-									.addComponent(cboUsoPerfil, 0, 214, Short.MAX_VALUE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblLogin)
-									.addGap(18)
-									.addComponent(txtUsoLogin, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
-								.addComponent(btnUsoUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNomer)
-								.addComponent(lblId))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(txtUsoNome, GroupLayout.PREFERRED_SIZE, 492, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(txtUsoId, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
 									.addComponent(lblcamposObrigatrios)
-									.addGap(81)))))
+									.addGap(81))))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnUsoRead, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addGap(29))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(txtUsoFone, GroupLayout.PREFERRED_SIZE, 234, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(txtUsoSenha, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblPerfil)
+									.addGap(18)
+									.addComponent(cboUsoPerfil, 0, 207, Short.MAX_VALUE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblLogin)
+									.addGap(18)
+									.addComponent(txtUsoLogin, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
+								.addComponent(btnUsoUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 					.addGap(43))
 		);
 		groupLayout.setVerticalGroup(
@@ -339,24 +347,24 @@ public class TelaUsuario extends JInternalFrame {
 						.addComponent(lblcamposObrigatrios))
 					.addGap(33)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNomer)
-						.addComponent(txtUsoNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtUsoNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNomer))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblFone)
-								.addComponent(txtUsoFone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(txtUsoFone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblFone)))
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblLogin)
 							.addComponent(txtUsoLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGap(32)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSenha)
 						.addComponent(lblPerfil)
 						.addComponent(txtUsoSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cboUsoPerfil, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cboUsoPerfil, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSenha))
 					.addGap(35)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnUsuCreate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
