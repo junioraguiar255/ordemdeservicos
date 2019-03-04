@@ -49,7 +49,7 @@ public class TelaSobre extends JFrame {
 		lblNewLabel.setBounds(70, 31, 246, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblDesenvolvidoPorJosemar = new JLabel("Desenvolvido por Josemar Aguiar Junior");
+		JLabel lblDesenvolvidoPorJosemar = new JLabel("Desenvolvido por Josemar");
 		lblDesenvolvidoPorJosemar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDesenvolvidoPorJosemar.setBounds(71, 310, 245, 14);
 		contentPane.add(lblDesenvolvidoPorJosemar);
