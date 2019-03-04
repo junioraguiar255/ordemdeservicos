@@ -19,6 +19,8 @@ import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TelaLogin extends JFrame {
 	/**
@@ -130,6 +132,14 @@ public class TelaLogin extends JFrame {
 		txtUsuario.setText("Admin");
 
 		txtSenha = new JPasswordField();
+		txtSenha.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent tecla) {
+				if(tecla.getKeyCode() == KeyEvent.VK_ENTER ) {
+					logar();
+				}
+			}
+		});
 		txtSenha.setBounds(113, 68, 193, 20);
 		contentPane.add(txtSenha);
 		txtSenha.setText("Admin");
