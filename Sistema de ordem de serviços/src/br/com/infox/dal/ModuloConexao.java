@@ -11,7 +11,8 @@ public class ModuloConexao {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
 					
-					Connection conn = DriverManager.getConnection(connectionUrl,"Josemar","123456");
+					Connection conn = DriverManager.getConnection(connectionUrl,"admin","admin");
+					System.out.println("Conectou");
 					return conn;
 		}catch(SQLException ex){
 			/*JOptionPane.showMessageDialog(null, ex.getMessage());
